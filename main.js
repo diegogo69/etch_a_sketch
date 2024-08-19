@@ -4,6 +4,18 @@ let rows = 16;
 let columns = 16
 const container = document.querySelector('.container');
 
+// COLOR MODES
+let singleColor = 'singleColor';
+let randomColor = 'randomColor';
+let grayScale = 'grayScale';
+let lightning = 'lightning';
+let shading = 'shading';
+
+// COLOR MODE
+let colorMode;
+// Color selected for painting
+let currentColor;
+
 // Size of container in px
 const size = container.offsetWidth;
 
@@ -45,21 +57,62 @@ function generateRandomColor() {
 // Mouse over event listener
 container.addEventListener('mouseover', (event) => {
     // event.target.style.backgroundColor = 'blue';
-    let randomColor = generateRandomColor();
-    event.target.style.backgroundColor = randomColor;
-    let sqrNewOpacity = parseFloat(event.target.style.opacity) + 0.1;
-    event.target.style.opacity = sqrNewOpacity;
+    // Paint based on color mode
+    let sqrOpacity;
+    if (colorMode === singleColor) {
+        // maybe unncessary but just to be verbose
+        currentColor = currentColor;
+        sqrOpacity = 1;
+    }
+    else if (colorMode === randomColor) {
+        currentColor = generateRandomColor();
+        sqrOpacity = parseFloat(event.target.style.opacity) + 0.1;
+    }
+    event.target.style.backgroundColor = currentColor;
+    event.target.style.opacity = sqrOpacity;
 })
 
 // Prompt for new grid
-const btnGrid = document.querySelector('.btnGrid');
-btnGrid.addEventListener('click', () => {
+const btnChangeGrid = document.querySelector('.btnChangeGrid');
+btnChangeGrid.addEventListener('click', () => {
     do {
         rows = parseInt(prompt('Enter grid size: '));
     } while (rows < 0 || rows > MAX_SQUARES)
     clearGrid();
     generateGrid(rows);
 
+})
+
+// TOOL BAR
+const toolsContainer = document.querySelector('#toolsContainer');
+toolsContainer.addEventListener('click', event => {
+    // Compare event ID
+    switch (event.target.id) {
+        case 'btnBlackWhite':
+            // Work with classes toBlack and toWhite
+            // If current class toWhite
+            if (event.target.classList.contains('toWhite')) {
+                event.target.classList.remove('toWhite');
+                // Change color to white
+                colorMode = singleColor;
+                currentColor = '#FFFFFF';
+                event.target.classList.add('toBlack');
+            }
+
+            else if (event.target.classList.contains('toBlack')) {
+                event.target.classList.remove('toBlack');
+                // Change color to white
+                colorMode = singleColor;
+                currentColor = '#000000';
+                event.target.classList.add('toWhite');
+            }
+        break;
+
+            // If current class toBlack
+              // Set color to black
+              // remove toBlack. set toWhite
+
+    }
 })
 
 generateGrid(rows);
