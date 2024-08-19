@@ -12,7 +12,7 @@ let lightning = 'lightning';
 let shading = 'shading';
 
 // COLOR MODE
-let colorMode;
+let colorMode = randomColor;
 // Color selected for painting
 let currentColor;
 
@@ -58,7 +58,7 @@ function generateRandomColor() {
 container.addEventListener('mouseover', (event) => {
     // event.target.style.backgroundColor = 'blue';
     // Paint based on color mode
-    let sqrOpacity;
+    let sqrOpacity = 0;
     if (colorMode === singleColor) {
         // maybe unncessary but just to be verbose
         currentColor = currentColor;
@@ -88,6 +88,7 @@ const toolsContainer = document.querySelector('#toolsContainer');
 toolsContainer.addEventListener('click', event => {
     // Compare event ID
     switch (event.target.id) {
+        // Selected BLACK / WHITE   
         case 'btnBlackWhite':
             // Work with classes toBlack and toWhite
             // If current class toWhite
@@ -106,7 +107,12 @@ toolsContainer.addEventListener('click', event => {
                 currentColor = '#000000';
                 event.target.classList.add('toWhite');
             }
-        break;
+            break;
+        
+        // Selected randomColor
+        case 'btnColorful':
+            colorMode = randomColor;
+            break;
 
             // If current class toBlack
               // Set color to black
