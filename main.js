@@ -13,3 +13,8 @@ for (let i = 0; i < (rows * rows ); i++) {
     square.textContent = i;
     container.appendChild(square);
 }
+
+// Mouse over event listener
+container.addEventListener('mouseover', (event) => {
+    event.target.style.backgroundColor = 'blue';
+})
