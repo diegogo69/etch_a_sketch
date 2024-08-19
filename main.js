@@ -42,16 +42,39 @@ function generateGrid(rows) {
 const hexCharacters = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F'];
 
 // Generate random color
-function generateRandomColor() {
-    let hexColor = "#";
+function generateRandomColor(colorMode) {
+    if (colorMode === grayScale) {
+        return getRandomGrayScale();
+    }
 
+    else if (colorMode === randomColor) {
+        return getRandomColor();
+    }
+    return
+}
+
+function getRandomColor() {
+    let hexColor = '#';
     for (let index = 0; index < HEX_LENGTH; index++) {
         let randomHexDigit = Math.floor(Math.random() * hexCharacters.length)
         hexColor += hexCharacters[randomHexDigit];
     }
-
     return hexColor;
 }
+
+// Min a max tones of grey scale. So they're not black not white
+const minGray = 3;
+const maxGray = 14;
+function getRandomGrayScale() {
+    let hexColor = '#';
+    let randomHexDigit = getRandomIntInclusive(minGray, maxGray)
+    console.log(randomHexDigit);
+    for (let index = 0; index < HEX_LENGTH; index++) {
+        hexColor += hexCharacters[randomHexDigit];
+    }
+    return hexColor;
+}
+
 
 
 // Mouse over event listener
@@ -65,8 +88,12 @@ container.addEventListener('mouseover', (event) => {
         sqrOpacity = 1;
     }
     else if (colorMode === randomColor) {
-        currentColor = generateRandomColor();
+        currentColor = generateRandomColor(colorMode);
         sqrOpacity = parseFloat(event.target.style.opacity) + 0.1;
+    }
+    else if (colorMode === grayScale) {
+        currentColor = generateRandomColor(colorMode);
+        sqrOpacity = 1;
     }
     event.target.style.backgroundColor = currentColor;
     event.target.style.opacity = sqrOpacity;
@@ -113,12 +140,20 @@ toolsContainer.addEventListener('click', event => {
         case 'btnColorful':
             colorMode = randomColor;
             break;
-
-            // If current class toBlack
-              // Set color to black
-              // remove toBlack. set toWhite
+        
+        // Selected GRAYSCALE
+        case 'btnGrayScale':
+            colorMode = grayScale;
+            break;
 
     }
 })
 
 generateGrid(rows);
+
+//Generate random number between a range 
+function getRandomIntInclusive(min, max) {
+    const minCeiled = Math.ceil(min);
+    const maxFloored = Math.floor(max);
+    return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled); // The maximum is inclusive and the minimum is inclusive
+  }
