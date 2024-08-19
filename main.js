@@ -53,10 +53,12 @@ function generateRandomColor(colorMode) {
     return
 }
 
+// FIX RANDOM COLOR TO NOT BE THAT SOLID
 function getRandomColor() {
     let hexColor = '#';
     for (let index = 0; index < HEX_LENGTH; index++) {
         let randomHexDigit = Math.floor(Math.random() * hexCharacters.length)
+
         hexColor += hexCharacters[randomHexDigit];
     }
     return hexColor;
@@ -156,4 +158,42 @@ function getRandomIntInclusive(min, max) {
     const minCeiled = Math.ceil(min);
     const maxFloored = Math.floor(max);
     return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled); // The maximum is inclusive and the minimum is inclusive
+}
+
+
+// let test = document.querySelector('.test');
+// // using computed style
+// let testColor = getComputedStyle(test).backgroundColor;
+// console.log(testColor); // rgb(240, 15, 15)
+// // using style.backgroundColor
+// let testColor2 = test.style.backgroundColor
+// console.log(testColor2); // ""
+
+const { abs, min, max, round } = Math;
+// background-color: hsl(0, 88%, 50%);
+const test = document.querySelector('.test');
+const testCS = window.getComputedStyle(test);
+const testbackgroundColor = testCS.getPropertyValue('background-color');
+console.log("bg rbg: " + testbackgroundColor); // rgb(240, 15, 15)
+let rgbConverted = rgbToHsl(255, 255, 255);
+console.log("bg: hsl(316, 20%, 41%)");
+console.log(`bg: ${rgbConverted}`);
+
+function rgbToHsl(r, g, b) {
+    (r /= 255), (g /= 255), (b /= 255);
+    const vmax = max(r, g, b), vmin = min(r, g, b);
+    let h, s, l = (vmax + vmin) / 2;
+  
+    if (vmax === vmin) {
+      return [0, 0, l]; // achromatic
+    }
+  
+    const d = vmax - vmin;
+    s = l > 0.5 ? d / (2 - vmax - vmin) : d / (vmax + vmin);
+    if (vmax === r) h = (g - b) / d + (g < b ? 6 : 0);
+    if (vmax === g) h = (b - r) / d + 2;
+    if (vmax === b) h = (r - g) / d + 4;
+    h /= 6;
+  
+    return [Math.round(h*360), Math.round(s*100), Math.round(l*100)];
   }
