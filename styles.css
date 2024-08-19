@@ -1,0 +1,14 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    box-sizing: border-box;
+    outline: 1px solid red;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 800px;
+    margin: auto;
+}
