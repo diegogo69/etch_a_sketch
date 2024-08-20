@@ -1,9 +1,12 @@
 const log = console.log;
 
+const gridSmall = 8;
+const gridMedium = 16;
+const gridLarge = 32;
 const MAX_SQUARES = 50;
 const HEX_LENGTH = 6;
-let rows = 16;
-let columns = 16
+let rows = 10;
+let columns = 10;
 const container = document.querySelector('.container');
 
 // COLOR MODES
@@ -22,7 +25,7 @@ let currentColor;
 const size = container.offsetWidth;
 
 // delete all existing squares
-function clearGrid() {
+function deleteGrid() {
     let squares = document.querySelectorAll('.square');
     squares.forEach(sqr => {sqr.remove()});
 }
@@ -35,7 +38,7 @@ function generateGrid(rows) {
         square.style.width = `${Math.floor(size / rows)}px`;
         square.style.height = `${Math.floor(size / rows)}px`;
         square.textContent = i;
-        square.style.opacity = 0;
+        square.style.opacity = 0.8;
         container.appendChild(square);
     }
 }
@@ -107,10 +110,10 @@ container.addEventListener('mouseover', (event) => {
 
     else if (colorMode === shading) {
         currentColor = getDarkerColor(event);
-        sqrOpacity = parseFloat(event.target.style.opacity);
+        // sqrOpacity = parseFloat(event.target.style.opacity);
     }
     event.target.style.backgroundColor = currentColor;
-    event.target.style.opacity = sqrOpacity;
+    // event.target.style.opacity = sqrOpacity;
 })
 
 // Darker function
@@ -123,6 +126,7 @@ function getDarkerColor(event) {
     // get rgb individual values: r, g, b
     const sqrRGBMatch = sqrColor.match(/^rgba?\((\d+), (\d+), (\d+)(?:, (\d+))?\)$/);
 
+    // make r g b values integers
     let rgbIntValues = sqrRGBMatch.slice(1).map(x => parseInt(x));
     log("rgb int values: ", rgbIntValues);
 
@@ -134,6 +138,8 @@ function getDarkerColor(event) {
     // if (sqrColor == 'rgb(255, 255, 255)') {
     //     return sqrColor;
     // }
+
+    // convert rgb values to hsl
     const sqrHSLColor = rgbToHsl(+sqrRGBMatch[1], +sqrRGBMatch[2], +sqrRGBMatch[3]);
     console.log(sqrHSLColor);
     if (sqrHSLColor[2] < 35) return `hsl(${sqrHSLColor[0]}, ${sqrHSLColor[1]}%, 20%)`; 
@@ -179,6 +185,7 @@ function getLighterColor(event) {
     // console.log(sqrHSL);
     // return sqrHSL;
 
+    // covert rgb values to hsl
     const sqrHSLColor = rgbToHsl(+sqrRGBMatch[1], +sqrRGBMatch[2], +sqrRGBMatch[3]);
     console.log(sqrHSLColor);
     // maybe just return the same rgb value
@@ -187,6 +194,7 @@ function getLighterColor(event) {
 
 }
 
+// Check if color is black, white or gray
 function isAchromatic([r, g, b]) {
     if (r === g && g === b) return true;   
     else return false;
@@ -195,12 +203,14 @@ function isAchromatic([r, g, b]) {
 // Prompt for new grid
 const btnChangeGrid = document.querySelector('.btnChangeGrid');
 btnChangeGrid.addEventListener('click', () => {
+    let newRows;
     do {
-        rows = parseInt(prompt('Enter grid size: '));
-    } while (rows < 0 || rows > MAX_SQUARES)
-    clearGrid();
-    generateGrid(rows);
-
+        newRows = parseInt(prompt('Enter grid size: '));
+    } while (newRows < 0 || newRows > MAX_SQUARES)
+        if (newRows) {
+            deleteGrid();
+            generateGrid(newRows);
+        }
 })
 
 // TOOL BAR
@@ -246,9 +256,58 @@ toolsContainer.addEventListener('click', event => {
         case 'btnShading':
             colorMode = shading;
             break;
+
+        case 'btnToggleGrid':
+            let squares = document.querySelectorAll('.square');
+            squares.forEach(sqr => {sqr.classList.toggle('outlined')});
+            break;
+
+        case 'btnClear':
+            clearGrid();
+            break;
+
+        case 'btnGridSmall':
+            deleteGrid();
+            generateGrid(gridSmall);
+            break;
+
+        case 'btnGridMedium':
+            deleteGrid();
+            generateGrid(gridMedium);
+            break;
+
+        case 'btnGridLarge':
+            deleteGrid();
+            generateGrid(gridLarge);
+            break;
     }
 })
 
+const customGridVal = document.querySelector("#customGridValue");
+const customGrid = document.querySelector("#customGrid");
+customGrid.value = rows;
+customGridVal.value = rows;
+customGridVal.textContent = `Value: ${customGridVal.value}`;
+
+// Change label
+customGrid.addEventListener("input", (event) => {
+    customGridVal.textContent = `Value: ${event.target.value}`;
+});
+
+// Change grid size
+customGrid.addEventListener("change", event => {
+    rows = customGrid.value
+    deleteGrid();
+    generateGrid(rows);
+})
+
+// Clear grid. Make it full white
+function clearGrid() {
+    let squares = document.querySelectorAll('.square');
+    squares.forEach(sqr => {sqr.style.backgroundColor = 'white'});
+}
+
+// DONT FORGOT AOUT THIS THIS
 generateGrid(rows);
 
 //Generate random number between a range 
@@ -267,15 +326,15 @@ function getRandomIntInclusive(min, max) {
 // let testColor2 = test.style.backgroundColor
 // console.log(testColor2); // ""
 
-const { abs, min, max, round } = Math;
-// background-color: hsl(0, 88%, 50%);
-const test = document.querySelector('.test');
-const testCS = window.getComputedStyle(test);
-const testbackgroundColor = testCS.getPropertyValue('background-color');
-console.log("bg rbg: " + testbackgroundColor); // rgb(240, 15, 15)
-let rgbConverted = rgbToHsl(255, 255, 255);
-console.log("bg: hsl(316, 20%, 41%)");
-console.log(`bg: ${rgbConverted}`);
+// const { abs, min, max, round } = Math;
+// // background-color: hsl(0, 88%, 50%);
+// const test = document.querySelector('.test');
+// const testCS = window.getComputedStyle(test);
+// const testbackgroundColor = testCS.getPropertyValue('background-color');
+// console.log("bg rbg: " + testbackgroundColor); // rgb(240, 15, 15)
+// let rgbConverted = rgbToHsl(255, 255, 255);
+// console.log("bg: hsl(316, 20%, 41%)");
+// console.log(`bg: ${rgbConverted}`);
 
 function rgbToHsl(r, g, b) {
     (r /= 255), (g /= 255), (b /= 255);
