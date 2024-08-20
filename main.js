@@ -97,9 +97,40 @@ container.addEventListener('mouseover', (event) => {
         currentColor = generateRandomColor(colorMode);
         sqrOpacity = 1;
     }
+
+    else if (colorMode === lightning) {
+        currentColor = getLighterColor(event);
+        sqrOpacity = parseFloat(event.target.style.opacity);
+    }
     event.target.style.backgroundColor = currentColor;
     event.target.style.opacity = sqrOpacity;
 })
+
+// Lightning fuction
+function getLighterColor(event) {
+    // Read sqr styles properties
+    // reference sqr
+    const sqrStyles = getComputedStyle(event.target);
+    // get sqr color prop
+    const sqrColor = sqrStyles.getPropertyValue('background-color');
+    // get rgb individual values: r, g, b
+    const sqrRGBMatch = sqrColor.match(/^rgba?\((\d+), (\d+), (\d+)(?:, (\d+))?\)$/);
+    // covert rgb to hsl
+    if (sqrColor == 'rgb(255, 255, 255)') {
+        return sqrColor;
+    }
+    const sqrHSLColor = rgbToHsl(+sqrRGBMatch[1], +sqrRGBMatch[2], +sqrRGBMatch[3]);
+    // Highlight hsl color luminance by 10%
+    let sqrNewLuminance = sqrHSLColor[2] + 10;
+    if (sqrNewLuminance > 100) sqrNewLuminance = 100;
+    let sqrNewSat = sqrHSLColor[1] + 10;
+    if (sqrNewSat > 100) sqrNewSat = 100;
+    // hsl color string casted
+    const sqrHSL = `hsl(${sqrHSLColor[0]}, ${sqrNewSat}%, ${sqrNewLuminance}%)`;
+    // const sqrLighter = sqrHSLColor.match(/^hsl\((\d+), (\d+), (\d+)\)$/);
+    console.log(sqrHSL);
+    return sqrHSL;
+}
 
 // Prompt for new grid
 const btnChangeGrid = document.querySelector('.btnChangeGrid');
@@ -137,17 +168,19 @@ toolsContainer.addEventListener('click', event => {
                 event.target.classList.add('toWhite');
             }
             break;
-        
-        // Selected randomColor
-        case 'btnColorful':
-            colorMode = randomColor;
-            break;
-        
-        // Selected GRAYSCALE
-        case 'btnGrayScale':
-            colorMode = grayScale;
-            break;
-
+                        
+            // Selected randomColor
+            case 'btnColorful':
+                colorMode = randomColor;
+                break;
+                
+            // Selected GRAYSCALE
+            case 'btnGrayScale':
+                colorMode = grayScale;
+                break;
+                
+            case 'btnLightning':
+                colorMode = lightning;
     }
 })
 
