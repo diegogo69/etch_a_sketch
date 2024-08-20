@@ -1,3 +1,5 @@
+const log = console.log;
+
 const MAX_SQUARES = 50;
 const HEX_LENGTH = 6;
 let rows = 16;
@@ -120,13 +122,21 @@ function getDarkerColor(event) {
     const sqrColor = sqrStyles.getPropertyValue('background-color');
     // get rgb individual values: r, g, b
     const sqrRGBMatch = sqrColor.match(/^rgba?\((\d+), (\d+), (\d+)(?:, (\d+))?\)$/);
+
+    let rgbIntValues = sqrRGBMatch.slice(1).map(x => parseInt(x));
+    log("rgb int values: ", rgbIntValues);
+
+    // if achromatic
+    if (isAchromatic(rgbIntValues)) {
+        return `rgb(calc(${rgbIntValues[0]} - 25), calc(${rgbIntValues[1]} - 25), calc(${rgbIntValues[2]} - 25))`;
+    }
     // covert rgb to hsl
     // if (sqrColor == 'rgb(255, 255, 255)') {
     //     return sqrColor;
     // }
     const sqrHSLColor = rgbToHsl(+sqrRGBMatch[1], +sqrRGBMatch[2], +sqrRGBMatch[3]);
     console.log(sqrHSLColor);
-    if (sqrHSLColor[2] < 40) return `hsl(${sqrHSLColor[0]}, ${sqrHSLColor[1]}%, 25%)`; 
+    if (sqrHSLColor[2] < 35) return `hsl(${sqrHSLColor[0]}, ${sqrHSLColor[1]}%, 20%)`; 
     return `hsl(${sqrHSLColor[0]}, ${sqrHSLColor[1]}%, calc(${sqrHSLColor[2]}% - 10%))`;
 
 
@@ -139,8 +149,20 @@ function getLighterColor(event) {
     const sqrStyles = getComputedStyle(event.target);
     // get sqr color prop
     const sqrColor = sqrStyles.getPropertyValue('background-color');
+    log("bg-color porperty: ", sqrColor);
+
     // get rgb individual values: r, g, b
-    const sqrRGBMatch = sqrColor.match(/^rgba?\((\d+), (\d+), (\d+)(?:, (\d+))?\)$/);
+    const sqrRGBMatch = sqrColor.match(/^rgba?\((\d+), (\d+), (\d+)(?:, \d+)?\)$/);
+    log("rgb regex match: ", sqrRGBMatch);
+
+    // get int rgb values
+    let rgbIntValues = sqrRGBMatch.slice(1).map(x => parseInt(x));
+    log("rgb int values: ", rgbIntValues);
+
+    // if achromatic
+    if (isAchromatic(rgbIntValues)) {
+        return `rgb(calc(${rgbIntValues[0]} + 25), calc(${rgbIntValues[1]} + 25), calc(${rgbIntValues[2]} + 25))`;
+    }
     // covert rgb to hsl
     // if (sqrColor == 'rgb(255, 255, 255)') {
     //     return sqrColor;
@@ -156,11 +178,18 @@ function getLighterColor(event) {
     // // const sqrLighter = sqrHSLColor.match(/^hsl\((\d+), (\d+), (\d+)\)$/);
     // console.log(sqrHSL);
     // return sqrHSL;
+
     const sqrHSLColor = rgbToHsl(+sqrRGBMatch[1], +sqrRGBMatch[2], +sqrRGBMatch[3]);
     console.log(sqrHSLColor);
-    if (sqrHSLColor[2] > 80) return `hsl(${sqrHSLColor[0]}, ${sqrHSLColor[1]}%, 90%)`; 
+    // maybe just return the same rgb value
+    if (sqrHSLColor[2] > 80) return `hsl(${sqrHSLColor[0]}, ${sqrHSLColor[1]}%, 95%)`; 
     return `hsl(${sqrHSLColor[0]}, ${sqrHSLColor[1]}%, calc(${sqrHSLColor[2]}% + 10%))`;
 
+}
+
+function isAchromatic([r, g, b]) {
+    if (r === g && g === b) return true;   
+    else return false;
 }
 
 // Prompt for new grid
