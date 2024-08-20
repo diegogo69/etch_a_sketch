@@ -102,9 +102,35 @@ container.addEventListener('mouseover', (event) => {
         currentColor = getLighterColor(event);
         sqrOpacity = parseFloat(event.target.style.opacity);
     }
+
+    else if (colorMode === shading) {
+        currentColor = getDarkerColor(event);
+        sqrOpacity = parseFloat(event.target.style.opacity);
+    }
     event.target.style.backgroundColor = currentColor;
     event.target.style.opacity = sqrOpacity;
 })
+
+// Darker function
+function getDarkerColor(event) {
+    // Read sqr styles properties
+    // reference sqr
+    const sqrStyles = getComputedStyle(event.target);
+    // get sqr color prop
+    const sqrColor = sqrStyles.getPropertyValue('background-color');
+    // get rgb individual values: r, g, b
+    const sqrRGBMatch = sqrColor.match(/^rgba?\((\d+), (\d+), (\d+)(?:, (\d+))?\)$/);
+    // covert rgb to hsl
+    // if (sqrColor == 'rgb(255, 255, 255)') {
+    //     return sqrColor;
+    // }
+    const sqrHSLColor = rgbToHsl(+sqrRGBMatch[1], +sqrRGBMatch[2], +sqrRGBMatch[3]);
+    console.log(sqrHSLColor);
+    if (sqrHSLColor[2] < 40) return `hsl(${sqrHSLColor[0]}, ${sqrHSLColor[1]}%, 25%)`; 
+    return `hsl(${sqrHSLColor[0]}, ${sqrHSLColor[1]}%, calc(${sqrHSLColor[2]}% - 10%))`;
+
+
+}
 
 // Lightning fuction
 function getLighterColor(event) {
@@ -116,20 +142,25 @@ function getLighterColor(event) {
     // get rgb individual values: r, g, b
     const sqrRGBMatch = sqrColor.match(/^rgba?\((\d+), (\d+), (\d+)(?:, (\d+))?\)$/);
     // covert rgb to hsl
-    if (sqrColor == 'rgb(255, 255, 255)') {
-        return sqrColor;
-    }
+    // if (sqrColor == 'rgb(255, 255, 255)') {
+    //     return sqrColor;
+    // }
+    // const sqrHSLColor = rgbToHsl(+sqrRGBMatch[1], +sqrRGBMatch[2], +sqrRGBMatch[3]);
+    // // Highlight hsl color luminance by 10%
+    // let sqrNewLuminance = sqrHSLColor[2] + 10;
+    // if (sqrNewLuminance > 100) sqrNewLuminance = 100;
+    // let sqrNewSat = sqrHSLColor[1] + 10;
+    // if (sqrNewSat > 100) sqrNewSat = 100;
+    // // hsl color string casted
+    // const sqrHSL = `hsl(${sqrHSLColor[0]}, ${sqrNewSat}%, ${sqrNewLuminance}%)`;
+    // // const sqrLighter = sqrHSLColor.match(/^hsl\((\d+), (\d+), (\d+)\)$/);
+    // console.log(sqrHSL);
+    // return sqrHSL;
     const sqrHSLColor = rgbToHsl(+sqrRGBMatch[1], +sqrRGBMatch[2], +sqrRGBMatch[3]);
-    // Highlight hsl color luminance by 10%
-    let sqrNewLuminance = sqrHSLColor[2] + 10;
-    if (sqrNewLuminance > 100) sqrNewLuminance = 100;
-    let sqrNewSat = sqrHSLColor[1] + 10;
-    if (sqrNewSat > 100) sqrNewSat = 100;
-    // hsl color string casted
-    const sqrHSL = `hsl(${sqrHSLColor[0]}, ${sqrNewSat}%, ${sqrNewLuminance}%)`;
-    // const sqrLighter = sqrHSLColor.match(/^hsl\((\d+), (\d+), (\d+)\)$/);
-    console.log(sqrHSL);
-    return sqrHSL;
+    console.log(sqrHSLColor);
+    if (sqrHSLColor[2] > 80) return `hsl(${sqrHSLColor[0]}, ${sqrHSLColor[1]}%, 90%)`; 
+    return `hsl(${sqrHSLColor[0]}, ${sqrHSLColor[1]}%, calc(${sqrHSLColor[2]}% + 10%))`;
+
 }
 
 // Prompt for new grid
@@ -169,18 +200,23 @@ toolsContainer.addEventListener('click', event => {
             }
             break;
                         
-            // Selected randomColor
-            case 'btnColorful':
-                colorMode = randomColor;
-                break;
-                
-            // Selected GRAYSCALE
-            case 'btnGrayScale':
-                colorMode = grayScale;
-                break;
-                
-            case 'btnLightning':
-                colorMode = lightning;
+        // Selected randomColor
+        case 'btnColorful':
+            colorMode = randomColor;
+            break;
+            
+        // Selected GRAYSCALE
+        case 'btnGrayScale':
+            colorMode = grayScale;
+            break;
+            
+        case 'btnLightning':
+            colorMode = lightning;
+            break;
+
+        case 'btnShading':
+            colorMode = shading;
+            break;
     }
 })
 
