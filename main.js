@@ -81,7 +81,6 @@ const maxGray = 14;
 function getRandomGrayScale() {
     let hexColor = '#';
     let randomHexDigit = getRandomIntInclusive(minGray, maxGray)
-    // console.log(randomHexDigit);
     for (let index = 0; index < HEX_LENGTH; index++) {
         hexColor += hexCharacters[randomHexDigit];
     }
@@ -133,7 +132,6 @@ function getDarkerColor(event) {
 
     // make r g b values integers
     let rgbIntValues = sqrRGBMatch.slice(1).map(x => parseInt(x));
-    // log("rgb int values: ", rgbIntValues);
 
     // if achromatic
     if (isAchromatic(rgbIntValues)) {
@@ -146,7 +144,6 @@ function getDarkerColor(event) {
 
     // convert rgb values to hsl
     const sqrHSLColor = rgbToHsl(+sqrRGBMatch[1], +sqrRGBMatch[2], +sqrRGBMatch[3]);
-    // console.log(sqrHSLColor);
     if (sqrHSLColor[2] < 35) return `hsl(${sqrHSLColor[0]}, ${sqrHSLColor[1]}%, 20%)`; 
     return `hsl(${sqrHSLColor[0]}, ${sqrHSLColor[1]}%, calc(${sqrHSLColor[2]}% - 10%))`;
 
@@ -160,39 +157,19 @@ function getLighterColor(event) {
     const sqrStyles = getComputedStyle(event.target);
     // get sqr color prop
     const sqrColor = sqrStyles.getPropertyValue('background-color');
-    // log("bg-color porperty: ", sqrColor);
 
     // get rgb individual values: r, g, b
     const sqrRGBMatch = sqrColor.match(/^rgba?\((\d+), (\d+), (\d+)(?:, \d+)?\)$/);
-    // log("rgb regex match: ", sqrRGBMatch);
 
     // get int rgb values
     let rgbIntValues = sqrRGBMatch.slice(1).map(x => parseInt(x));
-    // log("rgb int values: ", rgbIntValues);
 
     // if achromatic
     if (isAchromatic(rgbIntValues)) {
         return `rgb(calc(${rgbIntValues[0]} + 25), calc(${rgbIntValues[1]} + 25), calc(${rgbIntValues[2]} + 25))`;
     }
-    // covert rgb to hsl
-    // if (sqrColor == 'rgb(255, 255, 255)') {
-    //     return sqrColor;
-    // }
-    // const sqrHSLColor = rgbToHsl(+sqrRGBMatch[1], +sqrRGBMatch[2], +sqrRGBMatch[3]);
-    // // Highlight hsl color luminance by 10%
-    // let sqrNewLuminance = sqrHSLColor[2] + 10;
-    // if (sqrNewLuminance > 100) sqrNewLuminance = 100;
-    // let sqrNewSat = sqrHSLColor[1] + 10;
-    // if (sqrNewSat > 100) sqrNewSat = 100;
-    // // hsl color string casted
-    // const sqrHSL = `hsl(${sqrHSLColor[0]}, ${sqrNewSat}%, ${sqrNewLuminance}%)`;
-    // // const sqrLighter = sqrHSLColor.match(/^hsl\((\d+), (\d+), (\d+)\)$/);
-    // console.log(sqrHSL);
-    // return sqrHSL;
-
     // covert rgb values to hsl
     const sqrHSLColor = rgbToHsl(+sqrRGBMatch[1], +sqrRGBMatch[2], +sqrRGBMatch[3]);
-    // console.log(sqrHSLColor);
     // maybe just return the same rgb value
     if (sqrHSLColor[2] > 80) return `hsl(${sqrHSLColor[0]}, ${sqrHSLColor[1]}%, 95%)`; 
     return `hsl(${sqrHSLColor[0]}, ${sqrHSLColor[1]}%, calc(${sqrHSLColor[2]}% + 10%))`;
@@ -294,7 +271,6 @@ toolsContainer.addEventListener('click', event => {
 // PICK A COLOR
 const pickColor = document.querySelector('#pickColor');
 pickColor.addEventListener("input", event => {
-    console.log(event.target.value);
     currentColor = event.target.value;
 })
 
@@ -337,24 +313,7 @@ function getRandomIntInclusive(min, max) {
     return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled); // The maximum is inclusive and the minimum is inclusive
 }
 
-
-// let test = document.querySelector('.test');
-// // using computed style
-// let testColor = getComputedStyle(test).backgroundColor;
-// console.log(testColor); // rgb(240, 15, 15)
-// // using style.backgroundColor
-// let testColor2 = test.style.backgroundColor
-// console.log(testColor2); // ""
-
-// // background-color: hsl(0, 88%, 50%);
-// const test = document.querySelector('.test');
-// const testCS = window.getComputedStyle(test);
-// const testbackgroundColor = testCS.getPropertyValue('background-color');
-// console.log("bg rbg: " + testbackgroundColor); // rgb(240, 15, 15)
-// let rgbConverted = rgbToHsl(255, 255, 255);
-// console.log("bg: hsl(316, 20%, 41%)");
-// console.log(`bg: ${rgbConverted}`);
-
+// RGB TO HSL FUNCTION
 const { abs, min, max, round } = Math;
 function rgbToHsl(r, g, b) {
     (r /= 255), (g /= 255), (b /= 255);
