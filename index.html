@@ -8,9 +8,13 @@
     <script src="main.js" defer></script>
 </head>
 <body>
-    <header></header>    
+    <header>Etch-a-Sketch</header>    
     <main>
         <aside class="toolsContainer" id="toolsContainer">
+            <div class="pickColorContainer">
+                <label for="pickColor" id="labelPickColor">Pick a color:</label>
+                <input type="color" id="pickColor">
+            </div>
             <button class="btnBlackWhite toWhite" id="btnBlackWhite">Black / White</button>
             <button class="btnColorful" id="btnColorful">Colorful</button>
             <button class="btnGrayScale" id="btnGrayScale">Gray-scale</button>
@@ -19,9 +23,11 @@
             <button class="btnClear" id="btnClear">Clear Grid</button>
             <button class="btnToggleGrid" id="btnToggleGrid">Toggle grid</button>
             <button class="btnChangeGrid" id="btnChangeGrid">Change grid</button>
-            <button class="btnGridSmall" id="btnGridSmall">Small</button>
-            <button class="btnGridMedium" id="btnGridMedium">Medium</button>
-            <button class="btnGridLarge" id="btnGridLarge">Large</button>
+            <div class="gridSizeWrap">    
+                <button class="btnGridSmall" id="btnGridSmall">Small</button>
+                <button class="btnGridMedium" id="btnGridMedium">Medium</button>
+                <button class="btnGridLarge" id="btnGridLarge">Large</button>
+            </div>
             
             <label for="customGrid" id="customGridValue">Value: </label>
             <input type="range" min="2" max="32" step="2" value="10" id="customGrid">
@@ -31,6 +37,6 @@
             <div class="container"></div>
         </div>
     </main>
-    <footer></footer>
+    <footer>Github <a href="#">DiegoGo69</a></footer>
 </body>
 </html>
