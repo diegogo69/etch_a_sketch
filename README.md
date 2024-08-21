@@ -7,6 +7,16 @@ For this project I tried to put in practice all the knowledge we have touch so f
 ## How it works
 The html structure of the page is pretty basic. I used a container with a fixed size of 650px for both width and height, were the grid squares are drawed.
 
+### Using the cursor
+#### Mouse over
+Move the cursor over the squares you want to paint then.
+
+#### Click to pause, click to continue 
+Click on the sketch to **stop** or **resume** painting. Click once to stop painting, click againg to continue.
+
+#### Right click, pick a color
+If you want to select the same color of some square, right click on it to pick its color and paint with it.
+
 ### Drawing the grid
 I used a `generateGrid(rows)` function, that takes the number of grid squares for both width and height, calculate the squares size dividing the container width/size by the number of square rows/columns, using *Math.floor* and via a loop draws each square, wich are divs of class **square**. They are style with the opacity of **0.85** to make the colors look soft, and `flex: auto`. To make the squares occupy the space left from the division wich is not exact.
 
