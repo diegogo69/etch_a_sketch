@@ -35,6 +35,8 @@ header {
 footer {
     height: 48px;
     border-top: 2px solid rgb(223, 223, 223);
+    box-shadow: 1px 0px 3px 0px rgb(189, 189, 189);
+    font-size: 18px;
 
 }
 
@@ -58,9 +60,6 @@ aside {
 
 }
 
-footer {
-    box-shadow: 1px 0px 3px 0px rgb(189, 189, 189);
-}
 
 button {
     width: 140px;
@@ -69,7 +68,7 @@ button {
     font-size: 16px;
     font-weight: 900;
     color: #fffffe;
-    background-color: lightskyblue;
+    background-color: rgb(103, 182, 231);
     border-radius: 3px;
     box-shadow: 1px 1px 1px rgb(189, 189, 189);
     opacity: 90%;
@@ -106,16 +105,17 @@ button:hover {
 
 .content {
     display: flex;
+    justify-content: center;
+    align-items: center;
     flex: 3;
     background-color:  hsl(300, 1%, 99%);
-
 }
 
 .container {
     display: flex;
     flex-wrap: wrap;
     width: 650px;
-    margin: auto;
+    height: 650px;
     outline: 5px solid rgb(180, 180, 180);
     background-color: white;
     box-shadow: 9px 9px 1px rgb(124, 124, 124);

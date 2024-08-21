@@ -8,7 +8,7 @@ let gridActive = false;
 const gridSmall = 8;
 const gridMedium = 16;
 const gridLarge = 32;
-// Variable grid size
+// Variable (changing) grid size variable (binding)
 let rows = 10;
 
 // MAX number of squares
@@ -236,16 +236,19 @@ toolsContainer.addEventListener('click', event => {
         case 'btnGridSmall':
             deleteGrid();
             generateGrid(gridSmall);
+            updateRangeInput(gridSmall);
             break;
         // Grid size medium
         case 'btnGridMedium':
             deleteGrid();
             generateGrid(gridMedium);
+            updateRangeInput(gridMedium);
             break;
         // Grid size large
         case 'btnGridLarge':
             deleteGrid();
             generateGrid(gridLarge);
+            updateRangeInput(gridLarge);
             break;
     }
 })
@@ -263,9 +266,10 @@ pickColor.addEventListener("click", event => {
 // CUSTOM GRID SIZE
 const customGrid = document.querySelector("#customGrid");
 const customGridFooter = document.querySelector("#customGridValue");
-customGrid.value = rows;
-customGridFooter.value = rows;
-customGridFooter.textContent = `Value: ${customGridFooter.value}`;
+function updateRangeInput(rows) {
+    customGrid.value = rows;
+    customGridFooter.textContent = `Value: ${customGrid.value}`;
+}
 
 // Change label
 customGrid.addEventListener("input", (event) => {
@@ -285,15 +289,16 @@ function clearGrid() {
     squares.forEach(sqr => {sqr.style.backgroundColor = 'white'});
 }
 
-// DONT FORGOT AOUT THIS THIS
-generateGrid(rows);
-
 //Generate random number between a range 
 function getRandomIntInclusive(min, max) {
     const minCeiled = Math.ceil(min);
     const maxFloored = Math.floor(max);
     return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled); // The maximum is inclusive and the minimum is inclusive
 }
+
+// Generate starting grid
+generateGrid(rows);
+updateRangeInput(rows);
 
 // RGB TO HSL FUNCTION
 const { abs, min, max, round } = Math;
