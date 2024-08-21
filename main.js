@@ -25,7 +25,6 @@ let randomColor = 'randomColor';
 let grayScale = 'grayScale';
 let lightning = 'lightning';
 let shading = 'shading';
-let pickedColor = 'pickedColor';
 
 // COLOR MODE
 let colorMode = randomColor;
@@ -38,35 +37,36 @@ const sketchContainer = document.querySelector('.container');
 // Size of Sketch container in px
 const sketchSize = sketchContainer.offsetWidth;
 
-// Delete all existing squares
-function deleteGrid() {
-    let squares = document.querySelectorAll('.square');
-    squares.forEach(sqr => {sqr.remove()});
-}
-
 // Generate grid of squares of height and width rows
 function generateGrid(rows) {
+    let squareSize = Math.floor(sketchSize / rows);
     for (let i = 0; i < (rows * rows ); i++) {
         let square = document.createElement('div');
         square.classList.toggle('square');
-        square.style.width = `${Math.floor(sketchSize / rows)}px`;
-        square.style.height = `${Math.floor(sketchSize / rows)}px`;
+        square.style.width = `${squareSize}px`;
+        square.style.height = `${squareSize}px`;
         // square.textContent = i;
         if (gridActive) square.classList.toggle('outlined');
         sketchContainer.appendChild(square);
     }
 }
 
+// Delete all existing squares
+function deleteGrid() {
+    let squares = document.querySelectorAll('.square');
+    squares.forEach(sqr => {sqr.remove()});
+}
+
+// Clear grid. Make it full white
+function clearGrid() {
+    let squares = document.querySelectorAll('.square');
+    squares.forEach(sqr => {sqr.style.backgroundColor = 'white'});
+}
+
 // Generate random color
 function generateRandomColor(colorMode) {
-    if (colorMode === grayScale) {
-        return getRandomGrayScale();
-    }
-
-    else if (colorMode === randomColor) {
-        return getRandomColor();
-    }
-    return
+    if (colorMode === grayScale) return getRandomGrayScale();
+    else if (colorMode === randomColor) return getRandomColor();
 }
 
 // FIX RANDOM COLOR TO NOT BE THAT SOLID
@@ -74,7 +74,6 @@ function getRandomColor() {
     let hexColor = '#';
     for (let index = 0; index < HEX_LENGTH; index++) {
         let randomHexDigit = Math.floor(Math.random() * hexCharacters.length)
-
         hexColor += hexCharacters[randomHexDigit];
     }
     return hexColor;
@@ -93,7 +92,7 @@ function getRandomGrayScale() {
 }
 
 // Painting active
-sketchContainer.addEventListener('click', event => {
+sketchContainer.addEventListener('click', () => {
     if (paintActive === true) paintActive = false;
     else if (paintActive === false) paintActive = true;
 })
@@ -108,21 +107,22 @@ sketchContainer.addEventListener('mouseover', (event) => {
     }
 
     else if (colorMode === lightning) {
-        currentColor = getLighterColor(event);
+        currentColor = getLighterColor(event.target);
     }
 
     else if (colorMode === shading) {
-        currentColor = getDarkerColor(event);
+        currentColor = getDarkerColor(event.target);
     }
+    // Else singleColor. Use the current color
     
     if (paintActive) event.target.style.backgroundColor = currentColor;
 })
 
 
 // Darker function
-function getDarkerColor(event) {
+function getDarkerColor(sqr) {
     // Reference sqr styles properties
-    const sqrStyles = getComputedStyle(event.target);
+    const sqrStyles = getComputedStyle(sqr);
     // Get sqr color prop
     const sqrColor = sqrStyles.getPropertyValue('background-color');
     // Get rgb individual values: r, g, b
@@ -144,9 +144,9 @@ function getDarkerColor(event) {
 }
 
 // Lightning fuction
-function getLighterColor(event) {
+function getLighterColor(sqr) {
     // Reference sqr styles properties
-    const sqrStyles = getComputedStyle(event.target);
+    const sqrStyles = getComputedStyle(sqr);
     // Get sqr color prop
     const sqrColor = sqrStyles.getPropertyValue('background-color');
     // Get rgb individual values: r, g, b
@@ -259,7 +259,7 @@ pickColor.addEventListener("input", event => {
 })
 
 pickColor.addEventListener("click", event => {
-    colorMode = pickedColor;
+    colorMode = singleColor;
 })
 // MAKE CUSTOM GRID RANGE AND FOOTER VALUES CHANGE WHEN GRID SIZE IS UPDATED
 // CUSTOM GRID SIZE
@@ -282,11 +282,6 @@ customGrid.addEventListener("change", event => {
     generateGrid(rows);
 })
 
-// Clear grid. Make it full white
-function clearGrid() {
-    let squares = document.querySelectorAll('.square');
-    squares.forEach(sqr => {sqr.style.backgroundColor = 'white'});
-}
 
 //Generate random number between a range 
 function getRandomIntInclusive(min, max) {
