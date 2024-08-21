@@ -1,5 +1,9 @@
 const log = console.log;
 
+// activate painting
+let paintActive = true;
+let gridActive = false;
+
 const gridSmall = 8;
 const gridMedium = 16;
 const gridLarge = 32;
@@ -38,8 +42,9 @@ function generateGrid(rows) {
         square.classList.toggle('square');
         square.style.width = `${Math.floor(size / rows)}px`;
         square.style.height = `${Math.floor(size / rows)}px`;
-        square.textContent = i;
+        // square.textContent = i;
         square.style.opacity = 0.8;
+        if (gridActive) square.classList.toggle('outlined');
         container.appendChild(square);
     }
 }
@@ -83,8 +88,6 @@ function getRandomGrayScale() {
     return hexColor;
 }
 
-
-
 // Mouse over event listener
 container.addEventListener('mouseover', (event) => {
     // event.target.style.backgroundColor = 'blue';
@@ -113,9 +116,16 @@ container.addEventListener('mouseover', (event) => {
         currentColor = getDarkerColor(event);
         // sqrOpacity = parseFloat(event.target.style.opacity);
     }
-        
-    event.target.style.backgroundColor = currentColor;
+    
+    if (paintActive) event.target.style.backgroundColor = currentColor;
     // event.target.style.opacity = sqrOpacity;
+})
+
+// Painting active
+const sketchContainer = document.querySelector('.container');
+sketchContainer.addEventListener('click', event => {
+    if (paintActive === true) paintActive = false;
+    else if (paintActive === false) paintActive = true;
 })
 
 // Darker function
@@ -262,6 +272,8 @@ toolsContainer.addEventListener('click', event => {
 
         case 'btnToggleGrid':
             let squares = document.querySelectorAll('.square');
+            if (gridActive === true) gridActive = false;
+            else if (gridActive === false) gridActive = true;
             squares.forEach(sqr => {sqr.classList.toggle('outlined')});
             break;
 
