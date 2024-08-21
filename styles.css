@@ -46,20 +46,40 @@ main {
 }
 
 aside {
+    width: 220px;
     display: flex;
     flex-direction: column;
-    max-width: 250;
-    min-width: 100px;
-    flex: 0 1 250;
+    align-items: center;
     padding: 24px;
     gap: 15px;
-    align-items: center;
     background-color:  hsl(300, 20%, 97%);
     border: 2px solid rgb(223, 223, 223);
     box-shadow: 1px 1px 3px 0px rgb(189, 189, 189);
+    flex: 0 1 auto;
 
 }
 
+.help {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    padding: 14px;
+    gap: 15px;
+    align-items: stretch;
+    background-color:  hsl(300, 1%, 99%);
+    border: 2px solid rgb(223, 223, 223);
+    box-shadow: 1px 1px 3px 0px rgb(189, 189, 189);
+    flex: none;
+}
+
+ul {
+    list-style-type: none;
+}
+
+li {
+    margin-bottom: 15px;
+    font-size: 18px;
+}
 
 button {
     width: 140px;
@@ -72,6 +92,21 @@ button {
     border-radius: 3px;
     box-shadow: 1px 1px 1px rgb(189, 189, 189);
     opacity: 90%;
+}
+
+#btnClose {
+    width: 80px;
+    height: 40px;
+    font-size: 14px;
+    color: rgb(65, 65, 65);
+    background-color:  hsl(300, 20%, 97%);
+    box-shadow: 1px 1px 1px rgb(189, 189, 189);
+}
+
+.instructions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 button:hover {
@@ -107,7 +142,7 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex: 3;
+    flex: 1;
     background-color:  hsl(300, 1%, 99%);
 }
 
@@ -161,7 +196,8 @@ button:hover {
     opacity: 90%;
 }
 
-label {
+label,
+div > p {
     font-size: 20px;
     font-weight: 900;
 }
@@ -189,4 +225,8 @@ footer {
     flex-direction: column;
     gap:5px;
     align-items: center;
+}
+
+.hidden {
+    display: none;
 }

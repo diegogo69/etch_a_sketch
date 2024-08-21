@@ -307,6 +307,11 @@ function getRandomIntInclusive(min, max) {
     return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled); // The maximum is inclusive and the minimum is inclusive
 }
 
+const help = document.querySelector('#btnClose');
+help.addEventListener('click', () => {
+    document.querySelector('.help').classList.add('hidden');
+})
+
 // Generate starting grid
 generateGrid(rows);
 updateRangeInput(rows);
