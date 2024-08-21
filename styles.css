@@ -3,7 +3,6 @@
     border: 0px;
     padding: 0px;
     box-sizing: border-box;
-    /* outline: 1px solid red; */
 }
 
 body {
@@ -22,8 +21,6 @@ footer {
 }
 
 header {
-    /* background-color: rgb(216, 42, 216); */
-    /* background-color: rgb(235, 50, 235); */
     height: 72px; 
     box-shadow: 0px 3px 3px 0px rgb(189, 189, 189);
     color: rgb(65, 65, 65);

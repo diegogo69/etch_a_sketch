@@ -96,7 +96,6 @@ container.addEventListener('mouseover', (event) => {
     if (colorMode === singleColor) {
         // maybe unncessary but just to be verbose
         currentColor = currentColor;
-        sqrOpacity = 1;
     }
     else if (colorMode === randomColor) {
         currentColor = generateRandomColor(colorMode);
