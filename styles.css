@@ -7,6 +7,7 @@
 }
 
 body {
+    font-family: Roboto, 'Open Sans', 'Helvetica Neue', sans-serif;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -17,13 +18,21 @@ footer {
     flex: none;
     align-content: center;
     text-align: center;
+    background-color:  hsl(300, 20%, 97%);
 }
 
 header {
-    background-color: lightskyblue;
+    /* background-color: rgb(216, 42, 216); */
+    /* background-color: rgb(235, 50, 235); */
     height: 72px; 
     box-shadow: 0px 3px 3px 0px rgb(189, 189, 189);
+    color: rgb(65, 65, 65);
+    font-size: 38px;
+    font-weight: 900;
+    border-bottom: 2px solid rgb(223, 223, 223);
+
 }
+
 footer {
     height: 48px;
     border-top: 2px solid rgb(223, 223, 223);
@@ -44,9 +53,14 @@ aside {
     padding: 24px;
     gap: 20px;
     align-items: center;
-    border-right: 2px solid rgb(223, 223, 223);
-    /* box-shadow: 1px 0px 3px 0px rgb(189, 189, 189); */
+    background-color:  hsl(300, 20%, 97%);
+    border: 2px solid rgb(223, 223, 223);
+    box-shadow: 1px 1px 3px 0px rgb(189, 189, 189);
 
+}
+
+footer {
+    box-shadow: 1px 0px 3px 0px rgb(189, 189, 189);
 }
 
 button {
@@ -77,9 +91,12 @@ button:hover {
     width: 80px;
     height: 36px;
 }
+
 .content {
     display: flex;
     flex: 3;
+    background-color:  hsl(300, 1%, 99%);
+
 }
 
 .container {
@@ -87,7 +104,9 @@ button:hover {
     flex-wrap: wrap;
     width: 600px;
     margin: auto;
-    outline: 3px solid lightgray;
+    outline: 5px solid rgb(180, 180, 180);
+    background-color: white;
+    box-shadow: 9px 9px 1px rgb(124, 124, 124);
 }
 
 .test {
@@ -97,7 +116,7 @@ button:hover {
 }
 
 .outlined {
-    outline: 1px solid rgb(206, 206, 206);    
+    outline: 5px solid rgb(180, 180, 180);    
 }
 
 .square {
@@ -138,9 +157,16 @@ button:hover {
     opacity: 90%;
 }
 
-#labelPickColor {
+label {
     font-size: 18px;
     font-weight: 900;
+}
+
+p,
+div,
+label,
+footer {
+    color: rgb(65, 65, 65);
 }
 
 #pickColor:hover {
@@ -148,6 +174,13 @@ button:hover {
 }
 
 .pickColorContainer {
+    display: flex;
+    flex-direction: column;
+    gap:5px;
+    align-items: center;
+}
+
+#gridRangeContainer {
     display: flex;
     flex-direction: column;
     gap:5px;
