@@ -9,10 +9,10 @@ The html structure of the page is pretty basic. I used a container with a fixed 
 
 ### Using the cursor
 #### Mouse over
-Move the cursor over the squares you want to paint then.
+Move the cursor over the squares you want to paint.
 
 #### Click to pause, click to continue 
-Click on the sketch to **stop** or **resume** painting. Click once to stop painting, click againg to continue.
+Click on the sketch to **stop** or **resume** painting. Click once to stop painting, click again to continue.
 
 #### Right click, pick a color
 If you want to select the same color of some square, right click on it to pick its color and paint with it.
