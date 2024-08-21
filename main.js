@@ -176,12 +176,12 @@ function isAchromatic([r, g, b]) {
 // TOOL BAR
 const toolsContainer = document.querySelector('#toolsContainer');
 toolsContainer.addEventListener('click', event => {
-    // Compare event ID
+    // Compare event element ID
     switch (event.target.id) {
         // Selected BLACK / WHITE   
         case 'btnBlackWhite':
-            // Work with classes toBlack and toWhite
-            // If current class toWhite
+            // Work with classes toBlack and toWhite. Invert
+            // If current class toWhite.
             if (event.target.classList.contains('toWhite')) {
                 event.target.classList.remove('toWhite');
                 // Change color to white
@@ -189,7 +189,7 @@ toolsContainer.addEventListener('click', event => {
                 currentColor = '#FFFFFF';
                 event.target.classList.add('toBlack');
             }
-
+            // If current class toBlack
             else if (event.target.classList.contains('toBlack')) {
                 event.target.classList.remove('toBlack');
                 // Change color to white
@@ -197,26 +197,29 @@ toolsContainer.addEventListener('click', event => {
                 currentColor = '#000000';
                 event.target.classList.add('toWhite');
             }
-            break;
-                   
+            break;    
+
         // Selected randomColor
         case 'btnColorful':
             colorMode = randomColor;
             break;
-            
+
         // Selected GRAYSCALE
         case 'btnGrayScale':
             colorMode = grayScale;
             break;
-            
+        
+        // Selected lighning
         case 'btnLightning':
             colorMode = lightning;
             break;
 
+        // Selected shading
         case 'btnShading':
             colorMode = shading;
             break;
 
+        // Selected display or hide grid lines
         case 'btnToggleGrid':
             let squares = document.querySelectorAll('.square');
             if (gridActive === true) gridActive = false;
@@ -224,20 +227,22 @@ toolsContainer.addEventListener('click', event => {
             squares.forEach(sqr => {sqr.classList.toggle('outlined')});
             break;
 
+        // Clear sketch. Make all white
         case 'btnClear':
             clearGrid();
             break;
 
+        // Grid size small
         case 'btnGridSmall':
             deleteGrid();
             generateGrid(gridSmall);
             break;
-
+        // Grid size medium
         case 'btnGridMedium':
             deleteGrid();
             generateGrid(gridMedium);
             break;
-
+        // Grid size large
         case 'btnGridLarge':
             deleteGrid();
             generateGrid(gridLarge);
@@ -254,17 +259,17 @@ pickColor.addEventListener("input", event => {
 pickColor.addEventListener("click", event => {
     colorMode = pickedColor;
 })
-
+// MAKE CUSTOM GRID RANGE AND FOOTER VALUES CHANGE WHEN GRID SIZE IS UPDATED
 // CUSTOM GRID SIZE
-const customGridVal = document.querySelector("#customGridValue");
 const customGrid = document.querySelector("#customGrid");
+const customGridFooter = document.querySelector("#customGridValue");
 customGrid.value = rows;
-customGridVal.value = rows;
-customGridVal.textContent = `Value: ${customGridVal.value}`;
+customGridFooter.value = rows;
+customGridFooter.textContent = `Value: ${customGridFooter.value}`;
 
 // Change label
 customGrid.addEventListener("input", (event) => {
-    customGridVal.textContent = `Value: ${event.target.value}`;
+    customGridFooter.textContent = `Value: ${event.target.value}`;
 });
 
 // Change grid size
