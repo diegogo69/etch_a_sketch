@@ -47,6 +47,7 @@ function generateGrid(rows) {
         square.style.height = `${squareSize}px`;
         // square.textContent = i;
         if (gridActive) square.classList.toggle('outlined');
+        square.style.backgroundColor = "white";
         sketchContainer.appendChild(square);
     }
 }
@@ -92,7 +93,8 @@ function getRandomGrayScale() {
 }
 
 // Painting active
-sketchContainer.addEventListener('click', () => {
+const contentDiv = document.querySelector('.content');
+contentDiv.addEventListener('click', () => {
     if (paintActive === true) paintActive = false;
     else if (paintActive === false) paintActive = true;
 })
@@ -118,6 +120,18 @@ sketchContainer.addEventListener('mouseover', (event) => {
     if (paintActive) event.target.style.backgroundColor = currentColor;
 })
 
+// PICK A COLOR USING RIGHT CLICK
+sketchContainer.addEventListener('contextmenu', event => {
+    let sqrColor = getComputedStyle(event.target).getPropertyValue('background-color');
+    currentColor = sqrColor;
+    colorMode = singleColor;
+    // Change color picker vlue to be current color
+    const sqrRGBMatch = sqrColor.match(/^rgba?\((\d+), (\d+), (\d+)(?:, (\d+))?\)$/);
+    // Parse r g b values to integers
+    const rgbInt = sqrRGBMatch.slice(1).map(x => parseInt(x));
+    pickColor.value = rgbToHex(rgbInt[0], rgbInt[1], rgbInt[2]);
+    event.preventDefault();
+})
 
 // Darker function
 function getDarkerColor(sqr) {
@@ -186,6 +200,7 @@ toolsContainer.addEventListener('click', event => {
                 // Change color to white
                 colorMode = singleColor;
                 currentColor = '#FFFFFF';
+                pickColor.value = '#FFFFFF';
                 event.target.classList.add('toBlack');
             }
             // If current class toBlack
@@ -194,6 +209,7 @@ toolsContainer.addEventListener('click', event => {
                 // Change color to white
                 colorMode = singleColor;
                 currentColor = '#000000';
+                pickColor.value = '#000000';
                 event.target.classList.add('toWhite');
             }
             break;    
@@ -258,8 +274,9 @@ pickColor.addEventListener("input", event => {
     currentColor = event.target.value;
 })
 
-pickColor.addEventListener("click", event => {
+pickColor.addEventListener("click", () => {
     colorMode = singleColor;
+    currentColor = pickColor.value;
 })
 // MAKE CUSTOM GRID RANGE AND FOOTER VALUES CHANGE WHEN GRID SIZE IS UPDATED
 // CUSTOM GRID SIZE
@@ -313,4 +330,15 @@ function rgbToHsl(r, g, b) {
     h /= 6;
   
     return [Math.round(h*360), Math.round(s*100), Math.round(l*100)];
-  }
+}
+
+
+function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
+function componentToHex(c) {
+    let hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+}
+// alert(rgbToHex(0, 51, 255)); // #0033ff
