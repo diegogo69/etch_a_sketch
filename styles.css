@@ -5,6 +5,8 @@
     box-sizing: border-box;
 }
 
+
+
 body {
     font-family: Roboto, 'Open Sans', 'Helvetica Neue', sans-serif;
     min-height: 100vh;
@@ -152,10 +154,6 @@ button:hover {
 
 #btnShading {
     background-image: radial-gradient(rgb(50, 50, 50), rgb(90, 90, 90), rgb(165, 165, 165));
-}
-
-#btnChangeGrid {
-    display: none;
 }
 
 #pickColor {

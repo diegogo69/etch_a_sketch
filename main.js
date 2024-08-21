@@ -1,17 +1,23 @@
 const log = console.log;
 
-// activate painting
+// Painting and grid lines boolean values (toggle)
 let paintActive = true;
 let gridActive = false;
 
+// Default grid sizes
 const gridSmall = 8;
 const gridMedium = 16;
 const gridLarge = 32;
-const MAX_SQUARES = 50;
-const HEX_LENGTH = 6;
+// Variable grid size
 let rows = 10;
-let columns = 10;
-const container = document.querySelector('.container');
+
+// MAX number of squares
+const MAX_SQUARES = 100;
+
+// Length of a hexadecimal string value
+const HEX_LENGTH = 6;
+// List of hexadecimal characters
+const hexCharacters = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F'];
 
 // COLOR MODES
 let singleColor = 'singleColor';
@@ -26,10 +32,13 @@ let colorMode = randomColor;
 // Color selected for painting
 let currentColor;
 
-// Size of container in px
-const size = container.offsetWidth;
+// Reference to the Sketch container. Where the grid is draw
+const sketchContainer = document.querySelector('.container');
 
-// delete all existing squares
+// Size of Sketch container in px
+const sketchSize = sketchContainer.offsetWidth;
+
+// Delete all existing squares
 function deleteGrid() {
     let squares = document.querySelectorAll('.square');
     squares.forEach(sqr => {sqr.remove()});
@@ -40,17 +49,14 @@ function generateGrid(rows) {
     for (let i = 0; i < (rows * rows ); i++) {
         let square = document.createElement('div');
         square.classList.toggle('square');
-        square.style.width = `${Math.floor(size / rows)}px`;
-        square.style.height = `${Math.floor(size / rows)}px`;
+        square.style.width = `${Math.floor(sketchSize / rows)}px`;
+        square.style.height = `${Math.floor(sketchSize / rows)}px`;
         // square.textContent = i;
         square.style.opacity = 0.8;
         if (gridActive) square.classList.toggle('outlined');
-        container.appendChild(square);
+        sketchContainer.appendChild(square);
     }
 }
-
-// List of hexadecimal characters
-const hexCharacters = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F'];
 
 // Generate random color
 function generateRandomColor(colorMode) {
@@ -75,7 +81,7 @@ function getRandomColor() {
     return hexColor;
 }
 
-// Min a max tones of grey scale. So they're not black not white
+// Min and max tones for grey scale. So not black nor white
 const minGray = 3;
 const maxGray = 14;
 function getRandomGrayScale() {
@@ -87,15 +93,15 @@ function getRandomGrayScale() {
     return hexColor;
 }
 
+// Painting active
+sketchContainer.addEventListener('click', event => {
+    if (paintActive === true) paintActive = false;
+    else if (paintActive === false) paintActive = true;
+})
 // Mouse over event listener
-container.addEventListener('mouseover', (event) => {
-    // event.target.style.backgroundColor = 'blue';
+sketchContainer.addEventListener('mouseover', (event) => {
     // Paint based on color mode
-    if (colorMode === singleColor) {
-        // maybe unncessary but just to be verbose
-        currentColor = currentColor;
-    }
-    else if (colorMode === randomColor) {
+    if (colorMode === randomColor) {
         currentColor = generateRandomColor(colorMode);
     }
     else if (colorMode === grayScale) {
@@ -113,67 +119,52 @@ container.addEventListener('mouseover', (event) => {
     if (paintActive) event.target.style.backgroundColor = currentColor;
 })
 
-// Painting active
-const sketchContainer = document.querySelector('.container');
-sketchContainer.addEventListener('click', event => {
-    if (paintActive === true) paintActive = false;
-    else if (paintActive === false) paintActive = true;
-})
 
 // Darker function
 function getDarkerColor(event) {
-    // Read sqr styles properties
-    // reference sqr
+    // Reference sqr styles properties
     const sqrStyles = getComputedStyle(event.target);
-    // get sqr color prop
+    // Get sqr color prop
     const sqrColor = sqrStyles.getPropertyValue('background-color');
-    // get rgb individual values: r, g, b
+    // Get rgb individual values: r, g, b
     const sqrRGBMatch = sqrColor.match(/^rgba?\((\d+), (\d+), (\d+)(?:, (\d+))?\)$/);
-
-    // make r g b values integers
+    // Parse r g b values to integers
     let rgbIntValues = sqrRGBMatch.slice(1).map(x => parseInt(x));
 
-    // if achromatic
+    // If achromatic return same rgb values minus 25
     if (isAchromatic(rgbIntValues)) {
         return `rgb(calc(${rgbIntValues[0]} - 25), calc(${rgbIntValues[1]} - 25), calc(${rgbIntValues[2]} - 25))`;
     }
-    // covert rgb to hsl
-    // if (sqrColor == 'rgb(255, 255, 255)') {
-    //     return sqrColor;
-    // }
 
-    // convert rgb values to hsl
+    // If not achromatic convert rgb values to hsl
     const sqrHSLColor = rgbToHsl(+sqrRGBMatch[1], +sqrRGBMatch[2], +sqrRGBMatch[3]);
+    // Avoid returning a color with luminance less than 20%
     if (sqrHSLColor[2] < 35) return `hsl(${sqrHSLColor[0]}, ${sqrHSLColor[1]}%, 20%)`; 
+    // Return same color with lower luminance
     return `hsl(${sqrHSLColor[0]}, ${sqrHSLColor[1]}%, calc(${sqrHSLColor[2]}% - 10%))`;
-
-
 }
 
 // Lightning fuction
 function getLighterColor(event) {
-    // Read sqr styles properties
-    // reference sqr
+    // Reference sqr styles properties
     const sqrStyles = getComputedStyle(event.target);
-    // get sqr color prop
+    // Get sqr color prop
     const sqrColor = sqrStyles.getPropertyValue('background-color');
-
-    // get rgb individual values: r, g, b
+    // Get rgb individual values: r, g, b
     const sqrRGBMatch = sqrColor.match(/^rgba?\((\d+), (\d+), (\d+)(?:, \d+)?\)$/);
-
-    // get int rgb values
+    // Parse r g b values to integers
     let rgbIntValues = sqrRGBMatch.slice(1).map(x => parseInt(x));
 
-    // if achromatic
+    // If achromatic return same rgb values plus 25
     if (isAchromatic(rgbIntValues)) {
         return `rgb(calc(${rgbIntValues[0]} + 25), calc(${rgbIntValues[1]} + 25), calc(${rgbIntValues[2]} + 25))`;
     }
-    // covert rgb values to hsl
+    // If not achromatic convert rgb values to hsl
     const sqrHSLColor = rgbToHsl(+sqrRGBMatch[1], +sqrRGBMatch[2], +sqrRGBMatch[3]);
-    // maybe just return the same rgb value
+    // Avoid returning a color with luminance greater than 95%
     if (sqrHSLColor[2] > 80) return `hsl(${sqrHSLColor[0]}, ${sqrHSLColor[1]}%, 95%)`; 
+    // Return same color with higher luminance
     return `hsl(${sqrHSLColor[0]}, ${sqrHSLColor[1]}%, calc(${sqrHSLColor[2]}% + 10%))`;
-
 }
 
 // Check if color is black, white or gray
@@ -181,19 +172,6 @@ function isAchromatic([r, g, b]) {
     if (r === g && g === b) return true;   
     else return false;
 }
-
-// Prompt for new grid
-const btnChangeGrid = document.querySelector('.btnChangeGrid');
-btnChangeGrid.addEventListener('click', () => {
-    let newRows;
-    do {
-        newRows = parseInt(prompt('Enter grid size: '));
-    } while (newRows < 0 || newRows > MAX_SQUARES)
-        if (newRows) {
-            deleteGrid();
-            generateGrid(newRows);
-        }
-})
 
 // TOOL BAR
 const toolsContainer = document.querySelector('#toolsContainer');
@@ -220,8 +198,7 @@ toolsContainer.addEventListener('click', event => {
                 event.target.classList.add('toWhite');
             }
             break;
-         
-                        
+                   
         // Selected randomColor
         case 'btnColorful':
             colorMode = randomColor;
