@@ -52,7 +52,6 @@ function generateGrid(rows) {
         square.style.width = `${Math.floor(sketchSize / rows)}px`;
         square.style.height = `${Math.floor(sketchSize / rows)}px`;
         // square.textContent = i;
-        square.style.opacity = 0.8;
         if (gridActive) square.classList.toggle('outlined');
         sketchContainer.appendChild(square);
     }
