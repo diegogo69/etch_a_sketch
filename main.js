@@ -92,32 +92,26 @@ function getRandomGrayScale() {
 container.addEventListener('mouseover', (event) => {
     // event.target.style.backgroundColor = 'blue';
     // Paint based on color mode
-    let sqrOpacity = 0;
     if (colorMode === singleColor) {
         // maybe unncessary but just to be verbose
         currentColor = currentColor;
     }
     else if (colorMode === randomColor) {
         currentColor = generateRandomColor(colorMode);
-        sqrOpacity = parseFloat(event.target.style.opacity) + 0.1;
     }
     else if (colorMode === grayScale) {
         currentColor = generateRandomColor(colorMode);
-        sqrOpacity = 1;
     }
 
     else if (colorMode === lightning) {
         currentColor = getLighterColor(event);
-        sqrOpacity = parseFloat(event.target.style.opacity);
     }
 
     else if (colorMode === shading) {
         currentColor = getDarkerColor(event);
-        // sqrOpacity = parseFloat(event.target.style.opacity);
     }
     
     if (paintActive) event.target.style.backgroundColor = currentColor;
-    // event.target.style.opacity = sqrOpacity;
 })
 
 // Painting active
