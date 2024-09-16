@@ -1,5 +1,5 @@
 # etch_a_sketch
-Etch-a-Sketch. Show your inner Picasso (we know there's one). The Odin Project 2024.
+Etch-a-Sketch. Show your inner Picasso (we know there's one). The Odin Project 2024. Watch it [live](https://diegogo69.github.io/etch_a_sketch/).
 
 ## Goal
 For this project I tried to put in practice all the knowledge we have touch so far in the curriculum, an a little beyond that. Following good conventions for code style and the process of developing the logic.
